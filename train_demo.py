@@ -141,6 +141,8 @@ def main(train_dir='train', test_dir='test', noise_dir='pnoise'):
     n.compile_model()
     current_error = 1
     error         = 1
+    layers_old    = n.getlayers();
+    layers_new    = None;
 
     # We train the network 100 times
     # Each time we evaluate the results and write out the error percentage
@@ -167,9 +169,14 @@ def main(train_dir='train', test_dir='test', noise_dir='pnoise'):
         f.write("{}. epoch: {}\n".format(epoch, error*100))
         error = numpy.mean([int(x[1] != n.evaluate(x[0])) for x in test_set])
         g.write("{}. epoch: {}\n".format(epoch, error*100))
-
         print 'error calc took {}'.format(time.time() - z)
         print('epoch %i, validation error %f %%' % (epoch, error * 100))
+
+        print 'layers migration'
+        layers_new = n.getlayers()
+        print [numpy.linalg.norm(x[0]-x[1])/len(x[0]) for x in zip(layers_new, layers_old)]
+
+        
 
 
 if __name__ == '__main__':
