@@ -1,0 +1,6 @@
+*.txt
+*.pyc
+train/
+test/
+ptrain/
+ptest/
