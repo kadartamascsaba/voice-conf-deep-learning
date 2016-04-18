@@ -201,4 +201,10 @@ class Net:
         return self.classes[position]
 
     def getlayers(self):
-        return [ hidden.W.get_value().tolist() for hidden in self.hidden_layers ]
+        weights = [ hidden.W.get_value().tolist() for hidden in self.hidden_layers ]
+        weights.append(self.logreg_layer.W.get_value().tolist())
+
+        bias    = [ self.b.get_value().tolist() for hidden in self.hidden_layers ]
+        bias.append(self.logreg_layer.b.get_value().tolist())
+
+        return [sum(x) for x in zip(weights, bias)]
